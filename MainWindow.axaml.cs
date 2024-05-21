@@ -1,8 +1,8 @@
-
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace AvaloniaApplication1
@@ -27,6 +27,21 @@ namespace AvaloniaApplication1
             var searchTextBox = this.FindControl<TextBox>("SearchTextBox");
             var searchButton = this.FindControl<Button>("SearchButton");
             var resultTextBlock = this.FindControl<TextBlock>("ResultTextBlock");
+            var searchMethodComboBox = this.FindControl<ComboBox>("SearchMethodComboBox");
+            
+            var itemsToAdd = new[]
+            {
+                "Sequential Search",
+                "Fibonacci Search",
+                "Interpolation Search",
+                "Hash Search"
+            };
+
+            foreach (var item in itemsToAdd)
+            {
+                searchMethodComboBox.Items.Add(item);
+            }
+
 
             searchButton.Click += (sender, e) =>
             {
@@ -51,13 +66,29 @@ namespace AvaloniaApplication1
 
                     firstFiveTextBlock.Text = $"First five elements: {firstFiveBuilder.ToString()}";
 
-                    int sequentialIndex = SequentialSearch(_generatedArray, searchValue);
-                    int fibonacciIndex = FibonacciSearch(_generatedArray, searchValue);
-                    int interpolationIndex = InterpolationSearch(_generatedArray, searchValue);
-                    int hashIndex = HashSearch(_generatedArray, searchValue);
+                    string selectedSearchMethod = searchMethodComboBox.SelectedItem.ToString();
+                    int searchIndex = -1;
 
-                    resultTextBlock.Text =
-                        $"Sequential search: {sequentialIndex}, Fibonacci search: {fibonacciIndex}, Interpolation search: {interpolationIndex}, Hash search: {hashIndex}";
+                    switch (selectedSearchMethod)
+                    {
+                        case "Sequential Search":
+                            searchIndex = SequentialSearch(_generatedArray, searchValue);
+                            break;
+                        case "Fibonacci Search":
+                            searchIndex = FibonacciSearch(_generatedArray, searchValue);
+                            break;
+                        case "Interpolation Search":
+                            searchIndex = InterpolationSearch(_generatedArray, searchValue);
+                            break;
+                        case "Hash Search":
+                            searchIndex = HashSearch(_generatedArray, searchValue);
+                            break;
+                        default:
+                            resultTextBlock.Text = "Invalid search method selected";
+                            break;
+                    }
+
+                    resultTextBlock.Text = $"Search method: {selectedSearchMethod}, Result: {(searchIndex != -1 ? $"Found at index {searchIndex}" : "Not found")}";
                 }
                 catch (Exception ex)
                 {

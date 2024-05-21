@@ -1,4 +1,3 @@
-<!-- MainWindow.xaml -->
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AvaloniaApplication1.MainWindow"
@@ -6,6 +5,7 @@
     <StackPanel>
         <TextBlock Name="FirstFiveTextBlock" Margin="10"/>
         <TextBox Name="SearchTextBox" Margin="10"/>
+        <ComboBox Name="SearchMethodComboBox" Margin="10"/>
         <Button Name="SearchButton" Content="Search" Margin="10"/>
         <TextBlock Name="ResultTextBlock" Margin="10"/>
     </StackPanel>
