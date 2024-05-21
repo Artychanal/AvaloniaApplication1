@@ -4,7 +4,6 @@ using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
 namespace AvaloniaApplication1
 {
     public partial class MainWindow : Window
@@ -29,19 +28,6 @@ namespace AvaloniaApplication1
             var resultTextBlock = this.FindControl<TextBlock>("ResultTextBlock");
             var searchMethodComboBox = this.FindControl<ComboBox>("SearchMethodComboBox");
             
-            var itemsToAdd = new[]
-            {
-                "Sequential Search",
-                "Fibonacci Search",
-                "Interpolation Search",
-                "Hash Search"
-            };
-
-            foreach (var item in itemsToAdd)
-            {
-                searchMethodComboBox.Items.Add(item);
-            }
-
 
             searchButton.Click += (sender, e) =>
             {
@@ -66,7 +52,7 @@ namespace AvaloniaApplication1
 
                     firstFiveTextBlock.Text = $"First five elements: {firstFiveBuilder.ToString()}";
 
-                    string selectedSearchMethod = searchMethodComboBox.SelectedItem.ToString();
+                    string selectedSearchMethod = ((ComboBoxItem)searchMethodComboBox.SelectedItem).Content.ToString();
                     int searchIndex = -1;
 
                     switch (selectedSearchMethod)
@@ -153,14 +139,12 @@ namespace AvaloniaApplication1
                     fibMMm2 = fibM - fibMMm1;
                     offset = i;
                 }
-
                 else if (array[i] > value)
                 {
                     fibM = fibMMm2;
                     fibMMm1 = fibMMm1 - fibMMm2;
                     fibMMm2 = fibM - fibMMm1;
                 }
-
                 else return i;
             }
 
