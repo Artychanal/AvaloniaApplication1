@@ -1,17 +1,24 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="AvaloniaApplication1.MainWindow"
-        Title="Array Search" Width="500" Height="500">
-    <StackPanel>
-        <TextBlock Name="FirstFiveTextBlock" Margin="10"/>
-        <TextBox Name="SearchTextBox"  Margin="10"/>
-        <ComboBox Name="SearchMethodComboBox" SelectedIndex="1" MaxDropDownHeight="100" Margin="10">
-            <ComboBoxItem Content="Sequential Search"/>
-            <ComboBoxItem Content="Fibonacci Search"/>
-            <ComboBoxItem Content="Interpolation Search"/>
-            <ComboBoxItem Content="Hash Search"/>
-        </ComboBox>
-        <Button Name="SearchButton" Content="Search" Margin="10"/>
-        <TextBlock Name="ResultTextBlock" Margin="10"/>
+        Width="800" Height="600"
+        Title="Search Visualization">
+    <StackPanel Margin="10">
+        <TextBlock Name="InputPromptTextBlock"/>
+        <ComboBox Name="NumberOfElementsComboBox" Width="150"/>
+        <Button Name="GenerateArrayButton" Content="Generate Array" Width="150"/>
+        <TextBlock Name="FirstHundredTextBlock" TextWrapping="Wrap" Margin="10"/>
+        <StackPanel Orientation="Horizontal" Margin="10">
+            <TextBox Name="SearchTextBox" Width="150" Margin="0,0,10,0"/>
+            <ComboBox Name="SearchMethodComboBox" Width="150">
+                <ComboBoxItem Content="Sequential Search"/>
+                <ComboBoxItem Content="Fibonacci Search"/>
+                <ComboBoxItem Content="Interpolation Search"/>
+                <ComboBoxItem Content="Hash Search"/>
+            </ComboBox>
+            <Button Name="SearchButton" Content="Search" Width="100"/>
+        </StackPanel>
+        <TextBlock Name="ResultTextBlock" TextWrapping="Wrap" Margin="10"/>
+        <WrapPanel Name="ArrayVisualizationPanel" Margin="10" HorizontalAlignment="Center"/>
     </StackPanel>
 </Window>
