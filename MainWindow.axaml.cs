@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using System.Linq;
@@ -31,15 +30,15 @@ namespace AvaloniaApplication1
             var searchButton = this.FindControl<Button>("SearchButton");
             var resultTextBlock = this.FindControl<TextBlock>("ResultTextBlock");
             var searchMethodComboBox = this.FindControl<ComboBox>("SearchMethodComboBox");
-            var firstHundredTextBlock = this.FindControl<TextBlock>("FirstHundredTextBlock");
             var inputPromptTextBlock = this.FindControl<TextBlock>("InputPromptTextBlock");
             var numberOfElementsComboBox = this.FindControl<ComboBox>("NumberOfElementsComboBox");
             var generateArrayButton = this.FindControl<Button>("GenerateArrayButton");
+            var inputPromptTextBlock2 = this.FindControl<TextBlock>("InputPromptTextBlock2");
             _arrayVisualizationPanel = this.FindControl<WrapPanel>("ArrayVisualizationPanel");
+            var exitButton = this.FindControl<Button>("ExitButton");
 
             inputPromptTextBlock.Text = "Enter the number of elements to generate:";
 
-            // Populate the ComboBox with options
             var numberOfElementsOptions = new List<int> { 1, 10, 50, 100, 500, 1000, 5000, 10000, 20000, 50000, 100000 };
             foreach (var option in numberOfElementsOptions)
             {
@@ -50,14 +49,9 @@ namespace AvaloniaApplication1
             {
                 try
                 {
-                    // Parse the selected number of elements to generate
                     int numberOfElements = int.Parse((string)numberOfElementsComboBox.SelectedItem);
-
-                    // Generate the array with the specified number of elements
                     _generatedArray = ArrayGenerator.GenerateArray(numberOfElements);
                     Array.Sort(_generatedArray);
-
-                    // Display the first 100 elements of the generated array
                     DisplayArray();
                 }
                 catch (Exception ex)
@@ -65,7 +59,7 @@ namespace AvaloniaApplication1
                     resultTextBlock.Text = $"Error: {ex.Message}";
                 }
             };
-
+            inputPromptTextBlock2.Text = "Enter element you want to search for:";
 
             searchButton.Click += async (sender, e) =>
             {
@@ -109,13 +103,15 @@ namespace AvaloniaApplication1
                     resultTextBlock.Text = $"Error: {ex.Message}";
                 }
             };
+            exitButton.Click += (sender, e) =>
+            {
+                Close(); 
+            };
         }
 
         private void InitializeUI()
         {
             var resultTextBlock = this.FindControl<TextBlock>("ResultTextBlock");
-            var firstHundredTextBlock = this.FindControl<TextBlock>("FirstHundredTextBlock");
-
             resultTextBlock.Text = "Result will be displayed here";
         }
 
@@ -169,10 +165,17 @@ namespace AvaloniaApplication1
         public static int[] GenerateArray(int size)
         {
             Random rand = new Random();
+            HashSet<int> uniqueNumbers = new HashSet<int>();
             int[] array = new int[size];
+
             for (int i = 0; i < size; i++)
             {
-                array[i] = rand.Next(1, 100000);
+                int randomNumber;
+                do
+                {
+                    randomNumber = rand.Next(1, 1000000);
+                } while (!uniqueNumbers.Add(randomNumber)); 
+                array[i] = randomNumber;
             }
 
             return array;
@@ -187,8 +190,12 @@ namespace AvaloniaApplication1
             for (int i = 0; i < array.Length; i++)
             {
                 comparisons++;
-                reportProgress(i);
-                await Task.Delay(50); // Add delay for visualization purposes
+                if (array.Length == 10 || array.Length == 50 ||array.Length == 100)
+                {
+                    reportProgress(i);
+                    await Task.Delay(50);
+                }
+
                 if (array[i] == value)
                     return (i, comparisons);
             }
@@ -200,9 +207,9 @@ namespace AvaloniaApplication1
         {
             int comparisons = 0;
             int n = array.Length;
-            int fibMMm2 = 0; // (m-2)'th Fibonacci Number
-            int fibMMm1 = 1; // (m-1)'th Fibonacci Number
-            int fibM = fibMMm2 + fibMMm1; // m'th Fibonacci
+            int fibMMm2 = 0; 
+            int fibMMm1 = 1; 
+            int fibM = fibMMm2 + fibMMm1; 
 
             while (fibM < n)
             {
@@ -217,8 +224,11 @@ namespace AvaloniaApplication1
             {
                 int i = Math.Min(offset + fibMMm2, n - 1);
                 comparisons++;
-                reportProgress(i);
-                await Task.Delay(50); // Add delay for visualization purposes
+                if (array.Length == 10 || array.Length == 50 || array.Length == 100)
+                {
+                    reportProgress(i);
+                    await Task.Delay(50);
+                }
 
                 if (array[i] < value)
                 {
@@ -239,13 +249,18 @@ namespace AvaloniaApplication1
             if (fibMMm1 == 1 && array[offset + 1] == value)
             {
                 comparisons++;
-                reportProgress(offset + 1);
-                await Task.Delay(50); // Add delay for visualization purposes
+                if (array.Length == 10 || array.Length == 50 || array.Length == 100)
+                {
+                    reportProgress(offset + 1);
+                    await Task.Delay(50);
+                }
+
                 return (offset + 1, comparisons);
             }
 
             return (-1, comparisons);
         }
+
 
         public static async Task<(int, int)> InterpolationSearch(int[] array, int value, Action<int> reportProgress)
         {
@@ -255,9 +270,29 @@ namespace AvaloniaApplication1
             while (low <= high && value >= array[low] && value <= array[high])
             {
                 comparisons++;
-                int pos = low + ((value - array[low]) * (high - low) / (array[high] - array[low]));
-                reportProgress(pos);
-                await Task.Delay(50); // Add delay for visualization purposes
+
+                if (array[high] == array[low])
+                {
+                    if (array[low] == value)
+                    {
+                        reportProgress(low);
+                        return (low, comparisons);
+                    }
+                    break;
+                }
+
+                int pos = low + (int)(((double)(value - array[low]) * (high - low)) / (array[high] - array[low]));
+
+                if (pos < 0 || pos >= array.Length)
+                {
+                    break;
+                }
+
+                if (array.Length == 10 || array.Length == 50 ||array.Length == 100)
+                {
+                    reportProgress(pos);
+                    await Task.Delay(50);
+                }
 
                 if (array[pos] == value)
                     return (pos, comparisons);
@@ -270,35 +305,66 @@ namespace AvaloniaApplication1
             return (-1, comparisons);
         }
 
+
         public static async Task<(int, int)> HashSearch(int[] array, int value, Action<int> reportProgress)
         {
             int comparisons = 0;
-            int hash = value % array.Length;
-            int startHash = hash; 
+            int size = array.Length;
+            int[] hashTable = new int[size]; 
 
-            while (true)
+            for (int i = 0; i < size; i++)
+            {
+                hashTable[i] = -1;
+            }
+
+            int PJWHash(int key)
+            {
+                int BitsInUnsignedInt = sizeof(uint) * 8;
+                int ThreeQuarters = (BitsInUnsignedInt * 3) / 4;
+                int OneEighth = BitsInUnsignedInt / 8;
+                uint HighBits = (uint)(0xFFFFFFFF) << (BitsInUnsignedInt - OneEighth);
+                uint hash = 0;
+                uint test = 0;
+                foreach (char c in key.ToString())
+                {
+                    hash = (hash << OneEighth) + c;
+                    if ((test = hash & HighBits) != 0)
+                    {
+                        hash = ((hash ^ (test >> ThreeQuarters)) & (~HighBits));
+                    }
+                }
+                return (int)(hash % size);
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                int hash = PJWHash(array[i]); 
+                while (hashTable[hash] != -1)
+                {
+                    hash = (hash + 1) % size; 
+                }
+                hashTable[hash] = i; 
+            }
+
+            int hashValue = PJWHash(value);
+            while (hashTable[hashValue] != -1 && comparisons < size)
             {
                 comparisons++;
-                reportProgress(hash);
-                await Task.Delay(50); // Add delay for visualization purposes
-
-                if (array[hash] == value)
+                int index = hashTable[hashValue]; 
+                if (array.Length == 10 || array.Length == 50 || array.Length == 100)
                 {
-                    return (hash, comparisons); 
+                    reportProgress(index);
+                    await Task.Delay(50); 
                 }
 
-                if (array[hash] == 0 || comparisons == array.Length)
+                if (array[index] == value)
                 {
-                    return (-1, comparisons); 
+                    return (index, comparisons);
                 }
-
-                hash = (hash + 1) % array.Length;
-
-                if (hash == startHash)
-                {
-                    return (-1, comparisons); 
-                }
+                hashValue = (hashValue + 1) % size; 
             }
+
+            return (-1, comparisons);
         }
     }
 }

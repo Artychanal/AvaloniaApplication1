@@ -6,11 +6,11 @@
     <StackPanel Margin="10">
         <TextBlock Name="InputPromptTextBlock"/>
         <ComboBox Name="NumberOfElementsComboBox" Width="150"/>
-        <Button Name="GenerateArrayButton" Content="Generate Array" Width="150"/>
-        <TextBlock Name="FirstHundredTextBlock" TextWrapping="Wrap" Margin="10"/>
+        <Button Name="GenerateArrayButton" Content="Generate Array" Width="150" Margin="0,10,0,0"/>
+        <TextBlock Name="InputPromptTextBlock2" Margin="0, 10, 0 , 0"/>
         <StackPanel Orientation="Horizontal" Margin="10">
             <TextBox Name="SearchTextBox" Width="150" Margin="0,0,10,0"/>
-            <ComboBox Name="SearchMethodComboBox" Width="150">
+            <ComboBox Name="SearchMethodComboBox" Width="200" PlaceholderText="Choose search method" Margin="0,0,10,0">
                 <ComboBoxItem Content="Sequential Search"/>
                 <ComboBoxItem Content="Fibonacci Search"/>
                 <ComboBoxItem Content="Interpolation Search"/>
@@ -19,6 +19,9 @@
             <Button Name="SearchButton" Content="Search" Width="100"/>
         </StackPanel>
         <TextBlock Name="ResultTextBlock" TextWrapping="Wrap" Margin="10"/>
+        <Button Name="ExitButton" Content="Exit" Margin="10"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="350">
         <WrapPanel Name="ArrayVisualizationPanel" Margin="10" HorizontalAlignment="Center"/>
+        </ScrollViewer>
     </StackPanel>
 </Window>
