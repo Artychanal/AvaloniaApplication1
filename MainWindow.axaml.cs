@@ -71,7 +71,7 @@ namespace AvaloniaApplication1
                 {
                     if (searchTextBox.Text == null)
                     {
-                        throw new ArgumentException("Enter the value you want to search for");
+                        throw new ArgumentException("Enter the value you want to search for.");
                     }
                     int searchValue = int.Parse(searchTextBox.Text);
 
@@ -83,7 +83,7 @@ namespace AvaloniaApplication1
 
                     if (searchMethodComboBox.SelectedItem == null)
                     {
-                        throw new InvalidOperationException("Invalid search method.");
+                        throw new InvalidOperationException("Choose the search method.");
                     }
                     string selectedSearchMethod = ((ComboBoxItem)searchMethodComboBox.SelectedItem).Content.ToString();
                     int searchIndex = -1;
