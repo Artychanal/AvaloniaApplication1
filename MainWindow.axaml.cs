@@ -73,6 +73,10 @@ namespace AvaloniaApplication1
                         return;
                     }
 
+                    if (searchMethodComboBox.SelectedItem == null)
+                    {
+                        throw new InvalidOperationException("Invalid search method");
+                    }
                     string selectedSearchMethod = ((ComboBoxItem)searchMethodComboBox.SelectedItem).Content.ToString();
                     int searchIndex = -1;
                     int comparisons = 0;
@@ -207,9 +211,9 @@ namespace AvaloniaApplication1
         {
             int comparisons = 0;
             int n = array.Length;
-            int fibMMm2 = 0; 
-            int fibMMm1 = 1; 
-            int fibM = fibMMm2 + fibMMm1; 
+            int fibMMm2 = 0; // (m-2)'th Fibonacci No.
+            int fibMMm1 = 1; // (m-1)'th Fibonacci No.
+            int fibM = fibMMm2 + fibMMm1; // m'th Fibonacci
 
             while (fibM < n)
             {
