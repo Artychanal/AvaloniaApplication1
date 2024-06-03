@@ -49,6 +49,10 @@ namespace AvaloniaApplication1
             {
                 try
                 {
+                    if (numberOfElementsComboBox.SelectedItem == null)
+                    {
+                        throw new ArgumentException("Choose number of elements to generate array");
+                    }
                     int numberOfElements = int.Parse((string)numberOfElementsComboBox.SelectedItem);
                     _generatedArray = ArrayGenerator.GenerateArray(numberOfElements);
                     Array.Sort(_generatedArray);
@@ -65,6 +69,10 @@ namespace AvaloniaApplication1
             {
                 try
                 {
+                    if (searchTextBox.Text == null)
+                    {
+                        throw new ArgumentException("Enter the value you want to search for");
+                    }
                     int searchValue = int.Parse(searchTextBox.Text);
 
                     if (_generatedArray == null)
@@ -75,7 +83,7 @@ namespace AvaloniaApplication1
 
                     if (searchMethodComboBox.SelectedItem == null)
                     {
-                        throw new InvalidOperationException("Invalid search method");
+                        throw new InvalidOperationException("Invalid search method.");
                     }
                     string selectedSearchMethod = ((ComboBoxItem)searchMethodComboBox.SelectedItem).Content.ToString();
                     int searchIndex = -1;
